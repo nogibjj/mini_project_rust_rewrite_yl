@@ -1,3 +1,5 @@
+[![Rust CI/CD Pipeline](https://github.com/nogibjj/individual_project_2_yl/actions/workflows/ci.yml/badge.svg)](https://github.com/nogibjj/individual_project_2_yl/actions/workflows/ci.yml)
+
 # individual_project_2_yl
 # Project #2: Rust CLI Binary with SQLite
 
@@ -28,26 +30,36 @@
     - Clarity of explanation
     - Quality demonstration of the project
 
+## Goal
+This project delivers a comprehensive Data Extraction, Transformation, Loading (ETL) tool, alongside Querying (CRUD) capabilities, all developed using Rust. The process entails initializing a new Rust project with cargo init and installing Rust dependencies through Cargo.toml using cargo build. Notably, Github Copilot was employed to aid the transition from Python to Rust. This conversion was meticulously crafted to ensure adherence to Rust's syntax, robust error handling, and full utilization of Rust's unique features.
+
+This toolkit offers a suite of functions for ETL operations on datasets, facilitating queries on a SQLite database. It comprehensively covers CRUD (Create, Read, Update, Delete) operations, logging all queries to a Markdown file, query_log.md, to aid in the tracking and analysis of executed commands.
+
+The operational workflow includes running a Makefile to perform tasks such as installation (make install), testing (make test), code formatting (make format) with Python Black, linting (make lint) with Ruff, and an all-inclusive task (make all). This automation streamlines the data analysis process and enhances code quality.
+
+To cap it off, the project produces an optimized Rust binary, which is available as a GitHub Actions artifact, ready for download.
 
 ## Procedure
 1. Rust Initiation using `cargo init`
     initialize a new Rust project by running `cargo init` inside the directory, it will set up a new Rust project by:
-    * Creating a `Cargo.toml` file, which contains configuration data, dependencies, and other metadata about the Rust project.
-    * Creating a `src` directory with a main.rs file for binary projects or `lib.rs` for libraries.
-    * Generating a `.gitignore` file if the directory is not inside an existing git repository.
+    - Creating a `Cargo.toml` file, which contains configuration data, dependencies, and other metadata about the Rust project.
+    - Creating a `src` directory with a main.rs file for binary projects or `lib.rs` for libraries.
+    - Generating a `.gitignore` file if the directory is not inside an existing git repository.
 2. Rust Dependencies Installation using `cargo build`
     Project Metadata:
-    * It provides metadata about the Rust package, such as its name, version, authors, and edition.
+    - It provides metadata about the Rust package, such as its name, version, authors, and edition.
     ```
     [package]
     name = "individual_project_2_yl"
     version = "0.1.0"
     edition = "2021"
     ```
-    * Dependencies: It lists external packages (also known as "crates") that the project depends on. This allows Cargo to automatically fetch and build these dependencies when compiling the project.
+    - Dependencies: It lists external packages (also known as "crates") that the project depends on. This allows Cargo to automatically fetch and build these dependencies when compiling the project.
     ```
     [dependencies]
-    reqwest = { version = "^0.11", features = ["blocking"] }
+    You can find and download the uploaded artifact by going to actions and clicking on the latest workflow run.
+
+    reqwest= { version = "^0.11", features = ["blocking"] }
     rusqlite = "^0.29"
     csv = "^1.0"
     assert_cmd = "^2.0"
@@ -70,12 +82,12 @@ The Following Steps Are Performed Using `Github Copilot` Translation From Python
 
     Custom tasks related to the database:
 
-    * extract: Runs the extract action of the project.
-    * transform_load: Runs the transform_load action of the project.
-    * create: Executes a SQL query to insert a new record into the candy_data_DB table.
-    * read: Executes a SQL query to select a record from the candy_data_DB table.
-    * update: Executes a SQL query to update a specific record in the candy_data_DB table.
-    * delete: Executes a SQL query to delete a specific record from the candy_data_DB table.
+    - extract: Runs the extract action of the project.
+    - transform_load: Runs the transform_load action of the project.
+    - create: Executes a SQL query to insert a new record into the candy_data_DB table.
+    - read: Executes a SQL query to select a record from the candy_data_DB table.
+    - update: Executes a SQL query to update a specific record in the candy_data_DB table.
+    - delete: Executes a SQL query to delete a specific record from the candy_data_DB table.
 
     ```
     # Custom tasks
@@ -111,3 +123,55 @@ The Following Steps Are Performed Using `Github Copilot` Translation From Python
 
 8. log of successful database operations
     All the data base operations were logged in the `query_log.md` file for reference. All the logs show success.
+
+## Make Format, Test, Lint, All Approval Image
+- Format code make format
+- Lint code make lint
+- Test code make test
+
+## Workflow Overview
+```
+- Rust Initiation and Dependencies Installation (`Cargo init`, `Cargo.toml`, `Cargo build`)
+
+- Github Copilot Translation from Python to Rust
+
+    - Proper usage of Rust syntax
+
+    - Effective error handling in Rust
+
+    - Implementation of Rust's unique features
+
+- ETL-Query:  [E] Extract a dataset from URL, [T] Transform, [L] Load into SQLite Database and [Q] Query
+
+    - [E] The extract function downloads data from a specified URL and saves it to a local file.
+
+    - [T][L] The transform_load function reads a CSV dataset and inserts its records into a SQLite database after performing necessary table operations. It creates a table named AirlineSafetyDB with specific columns.
+
+    - [Q] The query function writes and executes SQL queries on the SQLite database to analyze and retrieve insights from the data. The queries can perform CRUD (create, read, update, delete) operations. 
+
+- Logging:  The log_query function appends SQL queries to a log file. By logging the queries into a Markdown file named `query_log.md`, it facilitates tracking and analysis of executed queries.
+
+- GitHub Actions: A workflow file that tests, builds, and lints the Rust code.
+
+- Optimized Rust Binary: Generates an optimized Rust binary as a GitHub Actions artifact that can be downloaded.
+```
+
+## Optimized Rust Binary
+The uploaded artifact can be found and downloaded by going to actions and clicking on the latest workflow run.
+
+## Video Demo
+The tutorial video demonstrates the CLI binary by covering the following:
+- open codespaces and wait for codespaces to be built
+- build: cargo build for dependencies installation
+- extract: make extract
+- transform and load: make transform_load
+- query sample: you can use make create, make read, make update, or make delete to see sample CRUD Operations
+- query your own: cargo run query
+
+The successful CRUD operations in the `query_log.md` file for reference.
+
+The uploaded artifact can be found and downloaded by going to actions and clicking on the latest workflow run.
+
+## Dataset Reference
+The dataset is from fivethirtyeight. It contains the data behind the story The Ultimate Halloween Candy Power Ranking. `candy-data.csv` includes attributes for each candy along with its ranking. For binary variables, 1 means yes, 0 means no.
+
