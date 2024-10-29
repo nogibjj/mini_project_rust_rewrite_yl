@@ -262,3 +262,9 @@ extract
 
 The extract action took 100060.8370000009 microseconds in Python.
 The extract action used 2560.0 kB in Python.
+```action
+extract
+```
+
+The extract action took 128934.42799997955 microseconds in Python.
+The extract action used 2560.0 kB in Python.
