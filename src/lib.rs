@@ -1,20 +1,20 @@
 use reqwest::blocking::Client;
 use rusqlite::{params, Connection, Result};
 use std::fs;
-use std::fs::OpenOptions;
-use std::io::Write;
+// use std::fs::OpenOptions;
+// use std::io::Write;
 
-const LOG_FILE: &str = "query_log.md";
+// const LOG_FILE: &str = "query_log.md";
 
-fn log_query(query: &str, log_file: &str) {
-    if let Ok(mut file) = OpenOptions::new().append(true).create(true).open(log_file) {
-        if let Err(err) = writeln!(file, "```sql\n{}\n```\n", query) {
-            eprintln!("Error writing to log file: {:?}", err);
-        }
-    } else {
-        eprintln!("Error opening log file for writing.");
-    }
-}
+// fn log_query(query: &str, log_file: &str) {
+//     if let Ok(mut file) = OpenOptions::new().append(true).create(true).open(log_file) {
+//         if let Err(err) = writeln!(file, "```sql\n{}\n```\n", query) {
+//             eprintln!("Error writing to log file: {:?}", err);
+//         }
+//     } else {
+//         eprintln!("Error opening log file for writing.");
+//     }
+// }
 
 pub fn extract(url: &str, file_path: &str, directory: &str) {
     if !fs::metadata(directory).is_ok() {
@@ -47,7 +47,10 @@ pub fn transform_load(dataset: &str) -> Result<String> {
             crispedricewafer INTEGER,
             hard INTEGER,
             bar INTEGER,
-            pluribus INTEGER
+            pluribus INTEGER,
+            sugarpercent FLOAT,
+            pricepercent FLOAT,
+            winpercent FLOAT
         )",
         [],
     )?;
@@ -65,9 +68,12 @@ pub fn transform_load(dataset: &str) -> Result<String> {
             crispedricewafer,
             hard,
             bar,
-            pluribus
+            pluribus,
+            sugarpercent,
+            pricepercent,
+            winpercent
         ) 
-        VALUES (?,?, ?, ?, ?, ?, ?, ?,?, ?)",
+        VALUES (?,?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?)",
     )?;
 
     for result in rdr.records() {
@@ -75,7 +81,8 @@ pub fn transform_load(dataset: &str) -> Result<String> {
             Ok(record) => {
                 stmt.execute(&[
                     &record[0], &record[1], &record[2], &record[3], &record[4], &record[5],
-                    &record[6], &record[7], &record[8], &record[9],
+                    &record[6], &record[7], &record[8], &record[9], &record[10], 
+                    &record[11], &record[12],
                 ])?;
             }
             Err(err) => {
@@ -105,6 +112,10 @@ pub fn query(query: &str) -> Result<()> {
                 row.get::<usize, i32>(8)?,
                 row.get::<usize, i32>(9)?,
                 row.get::<usize, i32>(10)?,
+                row.get::<usize, i32>(11)?,
+                row.get::<usize, i32>(12)?,
+                row.get::<usize, i32>(13)?,
+
             ))
         })?;
 
@@ -122,10 +133,13 @@ pub fn query(query: &str) -> Result<()> {
                     hard,
                     bar,
                     pluribus,
+                    sugarpercent,
+                    pricepercent,
+                    winpercent,
                 )) => {
                     println!(
-                        "Result: id={}, competitorname={}, chocolate={}, fruity={}, caramel={}, peanutyalmondy={}, nougat={}, crispedricewafer={}, hard={}, bar={}, pluribus={}",
-                        id, competitorname, chocolate, fruity, caramel, peanutyalmondy, nougat, crispedricewafer, hard, bar, pluribus
+                        "Result: id={}, competitorname={}, chocolate={}, fruity={}, caramel={}, peanutyalmondy={}, nougat={}, crispedricewafer={}, hard={}, bar={}, pluribus={}, sugarpercent={}, pricepercent={}, winpercent={}",
+                        id, competitorname, chocolate, fruity, caramel, peanutyalmondy, nougat, crispedricewafer, hard, bar, pluribus, sugarpercent, pricepercent, winpercent
                     );
                 }
                 Err(e) => eprintln!("Error in row: {:?}", e),
@@ -135,6 +149,6 @@ pub fn query(query: &str) -> Result<()> {
         // other CUD operations
         let _num_affected_rows = conn.execute_batch(query)?;
     }
-    log_query(query, LOG_FILE);
+    // log_query(query, LOG_FILE);
     Ok(())
 }

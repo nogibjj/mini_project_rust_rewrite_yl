@@ -1,3 +1,45 @@
+# Display python command-line utility versions
+python_install:
+	pip install --upgrade pip &&\
+	pip install -r requirements.txt
+
+python_test:
+	python -m pytest -vv --cov=main --cov=mylib test_*.py
+
+python_format:
+	black *.py 
+
+python_lint:
+	# Disable comment to test speed
+	# pylint --disable=R,C --ignore-patterns=test_.*?py *.py mylib/*.py
+	# ruff linting is 10-100X faster than pylint
+	ruff check *.py mylib/*.py
+
+python_deploy:
+	# deploy goes here
+
+python_all: python_install python_lint python_test python_format
+
+python_extract:
+	python main.py extract
+
+python_transform_load:
+	python main.py transform_load
+
+python_create:
+	python main.py general_query "INSERT INTO candy_data_DB (competitorname, chocolate, fruity, caramel, peanutyalmondy, nougat, crispedricewafer, hard, bar, pluribus, sugarpercent, pricepercent, winpercent) VALUES ('Grand Rabbit', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.4, 0.4, 90.0);"
+
+python_read:
+	python main.py general_query "SELECT * FROM candy_data_DB WHERE competitorname = 'Grand Rabbit';"
+
+python_update:
+	python main.py general_query "UPDATE candy_data_DB SET competitorname='Grand Rabbit', competitorname='Grand Rabbit', chocolate=0, fruity=0, caramel=0, peanutyalmondy=0, nougat=0, crispedricewafer=0, hard=0, bar=0, pluribus=0, sugarpercent=0.4, pricepercent=0.4, winpercent=90.0 WHERE id=86;"
+
+python_delete:
+	python main.py general_query "DELETE FROM candy_data_DB WHERE id=86;"
+
+
+
 # Display Rust command-line utility versions
 rust-version:
 	@echo "Rust command-line utility versions:"
@@ -49,7 +91,7 @@ transform_load:
 
 # Example: Create a database entry
 create:
-	cargo run query "INSERT INTO candy_data_DB (competitorname, chocolate, fruity, caramel, peanutyalmondy, nougat, crispedricewafer, hard, bar, pluribus) VALUES ('Grand Rabbit', 0, 0, 0, 0, 0, 0, 0, 0, 0);"
+	cargo run query "INSERT INTO candy_data_DB (competitorname, chocolate, fruity, caramel, peanutyalmondy, nougat, crispedricewafer, hard, bar, pluribus, sugarpercent, pricepercent, winpercent) VALUES ('Grand Rabbit', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.4, 0.4, 90.0);"
 
 # Example: Read from the database
 read:
@@ -57,7 +99,7 @@ read:
 
 # Example: Update a database entry
 update:
-	cargo run query "UPDATE candy_data_DB SET competitorname='Grand Rabbit', chocolate=0, fruity=1, caramel=0, peanutyalmondy=0, nougat=0, crispedricewafer=0, hard=0, bar=0, pluribus=0 WHERE id=86;"
+	cargo run query "UPDATE candy_data_DB SET competitorname='Grand Rabbit', chocolate=0, fruity=1, caramel=0, peanutyalmondy=0, nougat=0, crispedricewafer=0, hard=0, bar=0, pluribus=0, sugarpercent=0.4, pricepercent=0.4, winpercent=90.0 WHERE id=86;"
 
 # Example: Delete a database entry
 delete:

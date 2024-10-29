@@ -1,43 +1,89 @@
-[![Rust CI/CD Pipeline](https://github.com/nogibjj/individual_project_2_yl/actions/workflows/ci.yml/badge.svg)](https://github.com/nogibjj/individual_project_2_yl/actions/workflows/ci.yml)
 
-# individual_project_2_yl
-# Project #2: Rust CLI Binary with SQLite
+
+# Mini Project Rust Rewrite
 
 ## Requirements
- - Rust source code: The code should comprehensively understand Rust's syntax and unique features.
-    - Implementation of Rust's unique features
-    - Effective error handling in Rust
-    - Proper usage of Rust syntax
- - Use of LLM: In your README, explain how you utilized an LLM in your coding process.
-    - Dependencies and how to install them
-    - Explanation of the project
-    - How to run the program
- - SQLite Database: Include a SQLite database and demonstrate CRUD (Create, Read, Update, Delete) operations.
-    - Implementation of Rust's unique features
-    - Effective error handling in Rust
-    - Proper usage of Rust syntax
- - Optimized Rust Binary: Include a process that generates an optimized Rust binary as a Gitlab Actions artifact that can be downloaded.
- - README.md: A file that clearly explains what the project does, its dependencies, how to run the program, and how Gitlab Copilot was used.
-    - Dependencies and how to install them
-    - Explanation of the project
-    - How to run the program
- - Github/Gitlab Actions: A workflow file that tests, builds, and lints your Rust code.
-    - Correct linting of Rust code
-    - Correct building of Rust code
-    - Correct testing of Rust code
- - Video Demo: A YouTube link in README.md showing a clear, concise walkthrough and demonstration of your CLI binary.
-    - Quality of video and audio
-    - Clarity of explanation
-    - Quality demonstration of the project
+- Take an existing Python script for data processing
+- Rewrite it in Rust
+- Highlight improvements in speed and resource usage
+
+## Grading Criteria
+- Functionality in Rust (20 points)
+- Demonstrated improvements (20 points)
+- CI/CD pipeline (10 points)
+- README.md (10 points)
+
+## Deliverables
+- Rust and Python scripts
+- Performance comparison report (PDF or markdown)
+
+## Submission 
+- Public repository URL
 
 ## Goal
-This project delivers a comprehensive Data Extraction, Transformation, Loading (ETL) tool, alongside Querying (CRUD) capabilities, all developed using Rust. The process entails initializing a new Rust project with cargo init and installing Rust dependencies through Cargo.toml using cargo build. Notably, Github Copilot was employed to aid the transition from Python to Rust. This conversion was meticulously crafted to ensure adherence to Rust's syntax, robust error handling, and full utilization of Rust's unique features.
+This project delivers a comprehensive Data Extraction, Transformation, Loading (ETL) tool, alongside Querying (CRUD) capabilities, developed using Python and Rust each. The process entails taking an existing Python script for ETL-Query and rewrite it in rust using Github Copilot. The project highlights improvements in speed and resource usage after switching Python to Rust.
 
-This toolkit offers a suite of functions for ETL operations on datasets, facilitating queries on a SQLite database. It comprehensively covers CRUD (Create, Read, Update, Delete) operations, logging all queries to a Markdown file, query_log.md, to aid in the tracking and analysis of executed commands.
+This toolkit offers a suite of functions for ETL operations on datasets, facilitating queries on a SQLite database. It comprehensively covers CRUD (Create, Read, Update, Delete) operations, logging all queries to two Markdown file, python_query_log.md and rust_query_log.md, to aid in the tracking and analysis of executed commands and comparing the speed and resource usage for Python and Rust on the Extract operation.
 
 The operational workflow includes running a Makefile to perform tasks such as installation (make install), testing (make test), code formatting (make format) with Python Black, linting (make lint) with Ruff, and an all-inclusive task (make all). This automation streamlines the data analysis process and enhances code quality.
 
-To cap it off, the project produces an optimized Rust binary, which is available as a GitHub Actions artifact, ready for download.
+## Description on Python Workflow
+1. `my.lib` Folder
+    - create `extract.py`
+        Defines a function called extract that can download a file from a given web address (url) and save it to a specified location (file_path) on my computer, creating the specified folder (directory) if it doesn’t already exist. By default, it is set to download an airline safety data file from GitHub and save it in a folder named “data”.
+
+    - create `transform_load.py`
+        Defines a function called load that takes a CSV file containing airline safety data, reads it, and stores this data into a SQLite database. If the database table already exists, it removes it and creates a new one. After storing the data, it closes the database connection. The function is set by default to use a file named "airline-safety.csv" from the "data" folder.
+
+    - create `query.py`
+        This code provides a collection of functions to:
+
+            - Insert new records into the "AirlineSafetyDB" database table.
+
+            - Update existing records in that table.
+
+            - Delete records from that table.
+
+            - Read all records from that table.
+
+            - Execute any general query on the database.
+
+        After performing any of the above operations, the code also logs the executed SQL queries into a markdown file, query_log.md, to keep a record of all database interactions.
+
+2. `main.py` Folder
+    Provides a Command Line Interface (CLI) to perform various actions related to Extract, Transform, Load (ETL) and database operations, using functions from mylib.extract, mylib.transform_load, and mylib.query modules.
+
+    - It measures the initial time and memory usage of the process.
+
+    - Based on the action passed in via the command line, it routes the call to the appropriate function and performs the necessary action. For example: If the action is "extract", it extracts data and then logs the time taken and memory used.
+
+    - After executing the action, it captures the elapsed time and memory difference, printing it and logging it.
+
+3. `test_main.py`
+    Runs different parts (actions) of the main.py script independently with specific inputs and checks whether they are working as expected. test general query
+
+4. `Makefile`
+    Defines a series of tasks related to Python development, ranging from installing dependencies to running tests and linting the codebase.
+
+    ```
+    python_extract:
+        python main.py extract
+
+    python_transform_load:
+        python main.py transform_load
+
+    python_create:
+        python main.py general_query "INSERT INTO candy_data_DB candy_data_DB (competitorname, chocolate, fruity, caramel, peanutyalmondy, nougat, crispedricewafer, hard, bar, pluribus) VALUES ('Grand Rabbit', 0, 0, 0, 0, 0, 0, 0, 0, 0);"
+
+    python_read:
+        python main.py general_query "SELECT * FROM AirlineSafetyDB WHERE airline = 'Happy Airlines';"
+
+    python_update:
+        python main.py general_query "UPDATE AirlineSafetyDB SET airline='Happy Airlines', avail_seat_km_per_week=965346770, incidents_85_99=0, fatal_accidents_85_99=0, fatalities_85_99=0, incidents_00_14=0, fatal_accidents_00_14=0, fatalities_00_14=0 WHERE id=57;"
+
+    python_delete:
+        python main.py general_query "DELETE FROM AirlineSafetyDB WHERE id=57;"
+    ```
 
 ## Procedure
 1. Rust Initiation using `cargo init`

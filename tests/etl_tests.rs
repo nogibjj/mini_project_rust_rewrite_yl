@@ -23,7 +23,7 @@ fn test_transform_load() {
 #[test]
 fn test_query() {
     // Execute a SELECT query
-    let select_query = "SELECT * FROM candy_data_DB WHERE competitorname = '100 Grand';";
+    let select_query = "SELECT * FROM candy_data_DB WHERE competitorname = 'Air Heads';";
     let result = query(select_query);
 
     assert!(result.is_ok());
