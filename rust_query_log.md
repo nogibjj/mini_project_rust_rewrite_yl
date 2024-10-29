@@ -28,3 +28,9 @@ extract
 
 The extract action took 164131 microseconds and used 0 kB in Rust.
 
+```action
+extract
+```
+
+The extract action took 54620 microseconds and used 0 kB in Rust.
+
