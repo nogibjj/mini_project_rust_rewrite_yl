@@ -256,3 +256,9 @@ extract
 
 The extract action took 77041.62498703226 microseconds in Python.
 The extract action used 4272.0 kB in Python.
+```action
+extract
+```
+
+The extract action took 100060.8370000009 microseconds in Python.
+The extract action used 2560.0 kB in Python.
