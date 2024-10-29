@@ -2,9 +2,8 @@ use individual_project_2_yl::{extract, query, transform_load};
 use std::env;
 use std::fs::OpenOptions; // Added this import
 use std::io::Write;
-use std::time::{Instant};
+use std::time::Instant;
 use sys_info;
-
 
 const LOG_FILE: &str = "rust_query_log.md"; // Define the LOG_FILE constant
 
@@ -37,7 +36,6 @@ fn main() {
                                      // Assuming you have the sys_info crate for mem_info.
     let mem_info_before = sys_info::mem_info().unwrap(); // Initialize mem_info_before
 
-
     match action.as_str() {
         "extract" => {
             extract(
@@ -57,7 +55,13 @@ fn main() {
                 Err(e) => println!("Error: {:?}", e),
             }
             // Print elapsed time in microseconds, milliseconds and seconds
-            println!("Elapsed time for {}: {} seconds, {} milliseconds, {} microseconds", action, elapsed_time.as_secs(), elapsed_time.subsec_millis(), elapsed_time.subsec_micros());
+            println!(
+                "Elapsed time for {}: {} seconds, {} milliseconds, {} microseconds",
+                action,
+                elapsed_time.as_secs(),
+                elapsed_time.subsec_millis(),
+                elapsed_time.subsec_micros()
+            );
             println!("Memory used: {} KB", mem_used / 1024); // Print memory used in KB
         }
         "transform_load" => match transform_load("data/candy-data.csv") {

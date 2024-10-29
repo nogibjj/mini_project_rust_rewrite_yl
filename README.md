@@ -1,4 +1,5 @@
-
+[![Rust CI/CD Pipeline](https://github.com/nogibjj/mini_project_rust_rewrite_yl/actions/workflows/rustCI.yml/badge.svg)](https://github.com/nogibjj/mini_project_rust_rewrite_yl/actions/workflows/rustCI.yml)
+[![Python CI/CD Pipeline](https://github.com/nogibjj/mini_project_rust_rewrite_yl/actions/workflows/pythonci.yml/badge.svg)](https://github.com/nogibjj/mini_project_rust_rewrite_yl/actions/workflows/pythonci.yml) 
 
 # Mini Project Rust Rewrite
 
@@ -73,17 +74,22 @@ The operational workflow includes running a Makefile to perform tasks such as in
         python main.py transform_load
 
     python_create:
-        python main.py general_query "INSERT INTO candy_data_DB candy_data_DB (competitorname, chocolate, fruity, caramel, peanutyalmondy, nougat, crispedricewafer, hard, bar, pluribus) VALUES ('Grand Rabbit', 0, 0, 0, 0, 0, 0, 0, 0, 0);"
+	    python main.py general_query "INSERT INTO candy_data_DB (competitorname, chocolate, fruity, caramel, peanutyalmondy, nougat, crispedricewafer, hard, bar, pluribus, sugarpercent, pricepercent, winpercent) VALUES ('Grand Rabbit', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.4, 0.4, 90.0);"
 
     python_read:
-        python main.py general_query "SELECT * FROM AirlineSafetyDB WHERE airline = 'Happy Airlines';"
+    	python main.py general_query "SELECT * FROM candy_data_DB WHERE competitorname = 'Grand Rabbit';"
 
     python_update:
-        python main.py general_query "UPDATE AirlineSafetyDB SET airline='Happy Airlines', avail_seat_km_per_week=965346770, incidents_85_99=0, fatal_accidents_85_99=0, fatalities_85_99=0, incidents_00_14=0, fatal_accidents_00_14=0, fatalities_00_14=0 WHERE id=57;"
+        python main.py general_query "UPDATE candy_data_DB SET competitorname='Grand Rabbit', competitorname='Grand Rabbit', chocolate=0, fruity=0, caramel=0, peanutyalmondy=0, nougat=0, crispedricewafer=0, hard=0, bar=0, pluribus=0, sugarpercent=0.4, pricepercent=0.4, winpercent=90.0 WHERE id=86;"
 
     python_delete:
-        python main.py general_query "DELETE FROM AirlineSafetyDB WHERE id=57;"
+    	python main.py general_query "DELETE FROM candy_data_DB WHERE id=86;"
     ```
+5.  In Github Actions `pythonCI.yml`
+    This workflow primarily revolves around checking out the project's code, installing dependencies, linting, formatting, testing a Python application. It executes the make python_extract command to perform data extraction, which is later used for comparison in speed and resource usage with Rust.
+
+6. `python_query_log.md`
+    logs of successful python database operations
 
 ## Procedure
 1. Rust Initiation using `cargo init`
@@ -105,11 +111,12 @@ The operational workflow includes running a Makefile to perform tasks such as in
     [dependencies]
     You can find and download the uploaded artifact by going to actions and clicking on the latest workflow run.
 
-    reqwest= { version = "^0.11", features = ["blocking"] }
-    rusqlite = "^0.29"
-    csv = "^1.0"
-    assert_cmd = "^2.0"
+    reqwest = { version = "^0.11.27", features = ["blocking"] }
+    rusqlite = "^0.29.0"
+    csv = "^1.3.0"
+    assert_cmd = "^2.0.16"
     predicates = "0.9"  
+    sys-info = "0.9"
     ```
 The Following Steps Are Performed Using `Github Copilot` Translation From Python to Rust
 
@@ -148,7 +155,7 @@ The Following Steps Are Performed Using `Github Copilot` Translation From Python
 
     # Example: Create a database entry
     create:
-        cargo run query "INSERT INTO candy_data_DB (competitorname, chocolate, fruity, caramel, peanutyalmondy, nougat, crispedricewafer, hard, bar, pluribus) VALUES ('Grand Rabbit', 0, 0, 0, 0, 0, 0, 0, 0, 0);"
+	    cargo run query "INSERT INTO candy_data_DB (competitorname, chocolate, fruity, caramel, peanutyalmondy, nougat, crispedricewafer, hard, bar, pluribus, sugarpercent, pricepercent, winpercent) VALUES ('Grand Rabbit', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.4, 0.4, 90.0);"
 
 
     # Example: Read from the database
@@ -157,67 +164,35 @@ The Following Steps Are Performed Using `Github Copilot` Translation From Python
 
     # Example: Update a database entry
     update:
-        cargo run query "UPDATE candy_data_DB SET competitorname='Grand Rabbit', chocolate=0, fruity=1, caramel=0, peanutyalmondy=0, nougat=0, crispedricewafer=0, hard=0, bar=0, pluribus=0 WHERE id=86;"
+    	cargo run query "UPDATE candy_data_DB SET competitorname='Grand Rabbit', chocolate=0, fruity=1, caramel=0, peanutyalmondy=0, nougat=0, crispedricewafer=0, hard=0, bar=0, pluribus=0, sugarpercent=0.4, pricepercent=0.4, winpercent=90.0 WHERE id=86;"
+
 
     # Example: Delete a database entry
     delete:
         cargo run query "DELETE FROM candy_data_DB WHERE id=86;"
     ```
 
-7. Github Actions ci.yml
-    The CI/CD pipeline provides a comprehensive process for building, testing, and managing this Rust project on GitHub.
+7. Github Actions `rustCI.yml`
+    The CI/CD pipeline provides a comprehensive process for building, formatting, linting and testing the Rust project on GitHub. It executes the make extract command to perform data extraction, which is later used for comparison in speed and resource usage with Python.
 
 8. log of successful database operations
     All the data base operations were logged in the `query_log.md` file for reference. All the logs show success.
 
-## Make Format, Test, Lint, All Approval Image
-- Format code make format
-- Lint code make lint
-- Test code make test
+## Results
+    Performance_Comparison_Report_Rust_VS_Python.md
 
-## Workflow Overview
-```
-- Rust Initiation and Dependencies Installation (`Cargo init`, `Cargo.toml`, `Cargo build`)
+## Make Format, Test, Lint, All Approval Image for Python
+Format code make python_format
+Lint code make python_lint
+Test code make python_test
 
-- Github Copilot Translation from Python to Rust
+![alt text](image-1.png)
+![alt text](image.png)
 
-    - Proper usage of Rust syntax
 
-    - Effective error handling in Rust
-
-    - Implementation of Rust's unique features
-
-- ETL-Query:  [E] Extract a dataset from URL, [T] Transform, [L] Load into SQLite Database and [Q] Query
-
-    - [E] The extract function downloads data from a specified URL and saves it to a local file.
-
-    - [T][L] The transform_load function reads a CSV dataset and inserts its records into a SQLite database after performing necessary table operations. It creates a table named AirlineSafetyDB with specific columns.
-
-    - [Q] The query function writes and executes SQL queries on the SQLite database to analyze and retrieve insights from the data. The queries can perform CRUD (create, read, update, delete) operations. 
-
-- Logging:  The log_query function appends SQL queries to a log file. By logging the queries into a Markdown file named `query_log.md`, it facilitates tracking and analysis of executed queries.
-
-- GitHub Actions: A workflow file that tests, builds, and lints the Rust code.
-
-- Optimized Rust Binary: Generates an optimized Rust binary as a GitHub Actions artifact that can be downloaded.
-```
-
-## Optimized Rust Binary
-The uploaded artifact can be found and downloaded by going to actions and clicking on the latest workflow run.
-
-## Video Demo
-The tutorial video demonstrates the CLI binary by covering the following:
-- open codespaces and wait for codespaces to be built
-- build: cargo build for dependencies installation
-- extract: make extract
-- transform and load: make transform_load
-- query sample: you can use make create, make read, make update, or make delete to see sample CRUD Operations
-- query your own: cargo run query
-
-The successful CRUD operations in the `query_log.md` file for reference.
-
-The uploaded artifact can be found and downloaded by going to actions and clicking on the latest workflow run.
-
-## Dataset Reference
-The dataset is from fivethirtyeight. It contains the data behind the story The Ultimate Halloween Candy Power Ranking. `candy-data.csv` includes attributes for each candy along with its ranking. For binary variables, 1 means yes, 0 means no.
-
+## Make Format, Test, Lint, All Approval Image for Rust
+Format code make format
+Lint code make lint
+Test code make test
+![alt text](image-2.png)
+![alt text](image-3.png)

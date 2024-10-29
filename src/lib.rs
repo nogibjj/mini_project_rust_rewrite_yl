@@ -80,9 +80,19 @@ pub fn transform_load(dataset: &str) -> Result<String> {
         match result {
             Ok(record) => {
                 stmt.execute(&[
-                    &record[0], &record[1], &record[2], &record[3], &record[4], &record[5],
-                    &record[6], &record[7], &record[8], &record[9], &record[10], 
-                    &record[11], &record[12],
+                    &record[0],
+                    &record[1],
+                    &record[2],
+                    &record[3],
+                    &record[4],
+                    &record[5],
+                    &record[6],
+                    &record[7],
+                    &record[8],
+                    &record[9],
+                    &record[10],
+                    &record[11],
+                    &record[12],
                 ])?;
             }
             Err(err) => {
@@ -115,7 +125,6 @@ pub fn query(query: &str) -> Result<()> {
                 row.get::<usize, i32>(11)?,
                 row.get::<usize, i32>(12)?,
                 row.get::<usize, i32>(13)?,
-
             ))
         })?;
 
